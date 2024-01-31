@@ -1,10 +1,23 @@
 import NxWelcome from './nx-welcome';
-
+import { useState, useEffect } from "react";
 import { Route, Routes, Link } from 'react-router-dom';
+import axios from "axios";
 export function App() {
+
+  const [test, setTest] = useState();
+  useEffect(() => {
+    console.log(2)
+    axios
+      .get("http://localhost:3333/api")
+      .then(response => setTest(response.data.message))
+      .catch(error => console.log(error))
+  }, []);
+
+
   return (
     <div>
-      
+      <p>{test}</p>
+
       {/* START: routes */}
       {/* These routes and navigation have been generated for you */}
       {/* Feel free to move and update them to fit your needs */}
