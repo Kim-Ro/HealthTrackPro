@@ -1,0 +1,75 @@
+{
+  "name": "react",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "react/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/react",
+        "index": "react/src/index.html",
+        "baseHref": "/",
+        "main": "react/src/main.js",
+        "tsConfig": "react/tsconfig.app.json",
+        "assets": ["react/src/favicon.ico", "react/src/assets"],
+        "styles": ["react/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "react/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "react/src/environments/environment.js",
+              "with": "react/src/environments/environment.prod.js"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "react:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "react:build:development"
+        },
+        "production": {
+          "buildTarget": "react:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "react/jest.config.js"
+      }
+    }
+  },
+  "tags": []
+}
