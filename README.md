@@ -7,3 +7,11 @@ npm install nx -g
 Go into the health-track-pro folder and run following command:
 nx run-many -t serve express react
 
+common naming convention for branches
+
+feat - feature
+fix - solving an issue
+chore - technical debt
+
+
+https://www.conventionalcommits.org/en/v1.0.0/
