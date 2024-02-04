@@ -6,16 +6,29 @@
 import express from 'express';
 import * as path from 'path';
 import cors from 'cors';
-
+import checkup from "./models/checkup-model.js"
 const app = express();
 app.use(cors())
-
-
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+//// workspace begin //////
+
+
 app.get('/api', (req, res) => {
-  res.send({ message: 'Neustart nicht nötig!' });
+  checkup.find({"age.min":{$lte:34}, "age.max":{$gte:34}})
+  .then((result) => {
+    res.send(result);
+  })
 });
+
+
+
+
+
+
+
+
+///// workspace end //////
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
