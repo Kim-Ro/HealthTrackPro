@@ -12,15 +12,16 @@ mongoose.connect('mongodb+srv://stripedsquad:O9D9hyPXcjMmWhVC@checkup-app.koiavj
 
 ///////// New schema, resulting in 11 entries of which some have the exact same name, but easier to query! //////////
 const checkupSchema = new mongoose.Schema({
-    name:String,
-    sex:[String],
-    age:{
-        min: Number, 
-        max: Number, 
-        _id:false},
-    description: String, 
-    isRepeated: Boolean, 
-    repetitionInYears: Number, 
+    name: String,
+    sex: [String],
+    age: {
+        min: Number,
+        max: Number,
+        _id: false
+    },
+    description: String,
+    isRepeated: Boolean,
+    repetitionInYears: Number,
     specialConditions: String,
 })
 
