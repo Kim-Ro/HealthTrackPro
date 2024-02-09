@@ -18,6 +18,7 @@ export default function MyAppBar() {
                     </Typography>
                 </Toolbar>
             </AppBar>
+            <Toolbar />
         </Box>
     );
 }
