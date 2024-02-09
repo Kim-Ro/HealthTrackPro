@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -14,6 +13,15 @@ import SettingsIcon from '@mui/icons-material/Settings';
 const drawerWidth = 240;
 
 export default function NavDrawer() {
+
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+    const handleListItemClick = (event, index) => {
+        console.log("this is the index:", index);
+        setSelectedIndex(index);
+        console.log("this is the selected index", selectedIndex);
+    };
+
     return (
         <Drawer
             variant="permanent" anchor="left" component="nav"
@@ -26,16 +34,30 @@ export default function NavDrawer() {
             <Toolbar />
             <Box sx={{ overflow: 'auto' }}>
                 <List>
-                    {['Profiles', 'Settings'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <PeopleIcon /> : <SettingsIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
+                    <ListItem key="Profiles" disablePadding>
+                        <ListItemButton
+                            href='/'
+                            selected={selectedIndex === 0}
+                            onClick={(event) => handleListItemClick(event, 0)}
+                        >
+                            <ListItemIcon>
+                                <PeopleIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Profiles" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem key="Setting" disablePadding>
+                        <ListItemButton
+                            href="/settings"
+                            selected={selectedIndex === 1}
+                            onClick={(event) => handleListItemClick(event, 1)}
+                        >
+                            <ListItemIcon>
+                                <SettingsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Setting" />
+                        </ListItemButton>
+                    </ListItem>
                 </List>
             </Box>
         </Drawer>
