@@ -21,47 +21,36 @@ export default function NavDrawer() {
         setSelectedIndex(index);
     };
 
+    const navItems = [
+        { label: "Profiles", path: "/", icon: <PeopleIcon /> },
+        { label: "Settings", path: "/settings", icon: <SettingsIcon /> }
+    ];
+
+    const renderedNavItems = navItems.map((item) => {
+        return <ListItem key={item.label} disablePadding>
+            <ListItemButton
+                component={Link} to={item.path}
+                selected={selectedIndex === navItems.indexOf(item)}
+                onClick={(event) => handleListItemClick(event, navItems.indexOf(item))}
+            >
+                <ListItemIcon>
+                    {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.label} />
+            </ListItemButton>
+        </ListItem>
+    });
+
     return (
-        <Drawer
-            variant="permanent" anchor="left" component="nav"
+        <Drawer variant="permanent" anchor="left" component="nav"
             sx={{
                 width: drawerWidth,
                 flexShrink: 0,
                 [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-            }}
-        >
+            }}>
             <Toolbar />
             <Box sx={{ overflow: 'auto' }}>
-                <List>
-                    {/* <Link to="/" underline="none"> */}
-                    <ListItem key="Profiles" disablePadding>
-                        <ListItemButton
-                            component={Link} to="/"
-                            selected={selectedIndex === 0}
-                            onClick={(event) => handleListItemClick(event, 0)}
-                        >
-                            <ListItemIcon>
-                                <PeopleIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Profiles" underline="none" />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* </Link>
-                    <Link to="/settings" underline="none"> */}
-                    <ListItem key="Setting" disablePadding>
-                        <ListItemButton
-                            selected={selectedIndex === 1}
-                            onClick={(event) => handleListItemClick(event, 1)}
-                            component={Link} to="/settings"
-                        >
-                            <ListItemIcon>
-                                <SettingsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Setting" />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* </Link> */}
-                </List>
+                <List> {renderedNavItems}</List>
             </Box>
         </Drawer>
     );
