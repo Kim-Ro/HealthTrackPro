@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from "react";
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import MyAppBar from "../components/AppBar";
 import Box from '@mui/material/Box';
 import NavDrawer from "../components/NavDrawer";
