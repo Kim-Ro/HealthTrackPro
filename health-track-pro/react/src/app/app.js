@@ -2,6 +2,7 @@ import NxWelcome from './nx-welcome';
 import { useState, useEffect } from "react";
 import { Route, Routes, Link } from 'react-router-dom';
 import axios from "axios";
+import Button from '@mui/material/Button';
 export function App() {
 
   const [test, setTest] = useState();
@@ -17,7 +18,7 @@ export function App() {
   return (
     <div>
       <p>{test}</p>
-
+      <Button variant="contained">Hello world</Button>
       {/* START: routes */}
       {/* These routes and navigation have been generated for you */}
       {/* Feel free to move and update them to fit your needs */}
