@@ -12,6 +12,9 @@ mongoose.connect('mongodb+srv://stripedsquad:O9D9hyPXcjMmWhVC@checkup-app.koiavj
 
 //// profile schema
 const profileSchema = new mongoose.Schema({
+    user:{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "User"},
     name: {
         type: String,
         required: true
@@ -27,15 +30,14 @@ const profileSchema = new mongoose.Schema({
     age: {
         type: Number
     },
-    availableCheckups: {
-        type: mongoose.Schema.Types.ObjectId
-    }
-
+    availableCheckups: 
+        [{type: mongoose.Schema.Types.ObjectId, 
+        ref: "CheckUp"}]
 })
 
 const Profile = mongoose.model("Profile", profileSchema);
-
-module.exports = mongoose.model("Profile", profileSchema);
+ 
+export default Profile;
 
 
 // const testProfile = new Profile({
@@ -45,32 +47,6 @@ module.exports = mongoose.model("Profile", profileSchema);
 // })
 
 // testProfile.save().then((res) => { console.log(res) })
-
-
-// function getAge(year, month, day) {
-//     const birth = new Date(year, month - 1, day)
-//     const now = new Date()
-//     const diff = new Date(now.valueOf() - birth.valueOf())
-//     const age = Math.abs(diff.getFullYear() - 1970)
-//     return age
-// }
-
-
-// app.get("/api/newProfile", (req, res) => {
-//     const { name, sex, dateOfBirth } = req.body;
-//     const { year, month, day } = dateOfBirth.split("-");
-//     const age = getAge(year, month, day);
-//     const newProfile = new Profile({
-//         name: name,
-//         sex: sex,
-//         dateOfBirth: dateOfBirth,
-//         age: age
-//     })
-//     newProfile.save()
-//     res.send("Successful!")
-// })
-
-
 
 
 // todo:
