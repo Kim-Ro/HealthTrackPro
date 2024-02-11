@@ -33,26 +33,34 @@ export default function NavDrawer() {
             <Toolbar />
             <Box sx={{ overflow: 'auto' }}>
                 <List>
-                    <Link to="/">
-                        <ListItem key="Profiles" disablePadding>
-                            <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
-                                <ListItemIcon>
-                                    <PeopleIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Profiles" />
-                            </ListItemButton>
-                        </ListItem>
-                    </Link>
-                    <Link to="/settings">
-                        <ListItem key="Setting" disablePadding>
-                            <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)}>
-                                <ListItemIcon>
-                                    <SettingsIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Setting" />
-                            </ListItemButton>
-                        </ListItem>
-                    </Link>
+                    {/* <Link to="/" underline="none"> */}
+                    <ListItem key="Profiles" disablePadding>
+                        <ListItemButton
+                            component={Link} to="/"
+                            selected={selectedIndex === 0}
+                            onClick={(event) => handleListItemClick(event, 0)}
+                        >
+                            <ListItemIcon>
+                                <PeopleIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Profiles" underline="none" />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* </Link>
+                    <Link to="/settings" underline="none"> */}
+                    <ListItem key="Setting" disablePadding>
+                        <ListItemButton
+                            selected={selectedIndex === 1}
+                            onClick={(event) => handleListItemClick(event, 1)}
+                            component={Link} to="/settings"
+                        >
+                            <ListItemIcon>
+                                <SettingsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Setting" />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* </Link> */}
                 </List>
             </Box>
         </Drawer>
