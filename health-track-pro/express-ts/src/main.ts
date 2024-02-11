@@ -1,15 +1,23 @@
+/**
+ * This is not a production server yet!
+ * This is only a minimal backend to get started.
+ */
+
+
 import express from 'express';
 import * as path from 'path';
 import cors from 'cors';
-import CheckUp from './models/checkup-model.js';
-import User from "./models/user-model.js";
+import CheckUp from './models/checkup-model';
+import User from "./models/user-model";
+import { Document } from 'mongoose';
 const app = express();
 app.use(cors());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 //// workspace begin //////
 
-//// CREATE: create a new user with first profile, calculate age, add eligible checkups //////
+//// CREATE: create a new profile, calculate age, add all data to database. //////
+
 
 const getAge = function (dateOfBirth) {
   const [year, month, day] = dateOfBirth.split('-');
@@ -75,6 +83,7 @@ const newUser = async function(userAuthID, name, sex, dateOfBirth) {
 //// DELETE -> delete data, delete profile /////////
 
 ///// workspace end //////
+
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
