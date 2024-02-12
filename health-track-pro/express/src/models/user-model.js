@@ -34,6 +34,7 @@ mongoose.connect('mongodb+srv://stripedsquad:O9D9hyPXcjMmWhVC@checkup-app.koiavj
 
 const userSchema = new mongoose.Schema({
     userAuthID: String,
+    name: String,
     profiles: [profileSchema]
 })
 

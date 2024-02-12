@@ -23,6 +23,7 @@ const getAge = function (dateOfBirth) {
 const createUser = async function (userAuthID, name, sex, dateOfBirth, age) {
   const user = new User({
     userAuthID: userAuthID,
+    name:name,
     profiles: {
       name: name,
       sex: sex,
@@ -39,10 +40,11 @@ const getCheckups = async function (userID, profileID) {
   const profile = await user.profiles.id(profileID);
   const age = profile.age;
   const sex = profile.sex;
-  const checkups = await CheckUp.find({ "sex": sex, "age.min": { $lte: age }, "age.max": { $gte: age } });
+  const checkups = await CheckUp.find({ "sex": sex, "age.min": { $lte: age }, "age.max": { $not:{$lt: age }}});
   for (const element of checkups) {
     profile.availableCheckups.push(element._id);
   }
+  await user.save()
 }
 
 const newUser = async function (userAuthID, name, sex, dateOfBirth) {
@@ -53,7 +55,7 @@ const newUser = async function (userAuthID, name, sex, dateOfBirth) {
   await getCheckups(userID, profileID);
 }
 
-//Create User Route~
+// Create new user, including first profile + available checkups
 
 app.post("/api/newUser", async (req, res) => {
   try {
@@ -63,11 +65,11 @@ app.post("/api/newUser", async (req, res) => {
   }
   catch (err) {
     console.log("Something went wrong", err)
-    res.send({ message: "Something went wrong. Please try again, good sir or madam" })
+    res.send({ message: "Something went wrong." })
   }
 })
 
-//Look at your user and profiles
+//Look at user with all existing profiles
 
 app.get("/api/user/:userID/profiles", async (req, res) => {
   try {
@@ -77,11 +79,11 @@ app.get("/api/user/:userID/profiles", async (req, res) => {
   }
   catch (err) {
     console.log("Something went wrong", err)
-    res.send({ message: "Something went wrong. Please try again, good sir or madam" })
+    res.send({ message: "Something went wrong." })
   }
 })
 
-//Look at a profile created in your user
+//Fetch specific profile from user account
 
 app.get("/api/user/:userID/profiles/:profileID", async (req, res) => {
   try {
@@ -92,7 +94,7 @@ app.get("/api/user/:userID/profiles/:profileID", async (req, res) => {
   }
   catch (err) {
     console.log("Something went wrong", err)
-    res.send({ message: "Something went wrong. Please try again, good sir or madam" })
+    res.send({ message: "Something went wrong." })
   }
 })
 
