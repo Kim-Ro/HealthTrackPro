@@ -6,6 +6,8 @@ import User from "./models/user-model.js";
 const app = express();
 app.use(cors());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
 
 //// workspace begin //////
 
@@ -23,7 +25,7 @@ const getAge = function (dateOfBirth) {
 const createUser = async function (userAuthID, name, sex, dateOfBirth, age) {
   const user = new User({
     userAuthID: userAuthID,
-    name:name,
+    name: name,
     profiles: {
       name: name,
       sex: sex,
@@ -40,11 +42,11 @@ const getCheckups = async function (userID, profileID) {
   const profile = await user.profiles.id(profileID);
   const age = profile.age;
   const sex = profile.sex;
-  const checkups = await CheckUp.find({ "sex": sex, "age.min": { $lte: age }, "age.max": { $not:{$lt: age }}});
+  const checkups = await CheckUp.find({ "sex": sex, "age.min": { $lte: age }, "age.max": { $not: { $lt: age } } });
   for (const element of checkups) {
     profile.availableCheckups.push(element._id);
   }
-  await user.save()
+  await user.save();
 }
 
 const newUser = async function (userAuthID, name, sex, dateOfBirth) {
@@ -61,7 +63,7 @@ app.post("/api/newUser", async (req, res) => {
   try {
     const { userAuthID, name, sex, dateOfBirth } = req.body;
     await newUser(userAuthID, name, sex, dateOfBirth)
-      .then(res.send({ message: "New user created!" }))
+    res.send({ message: "New user created!" })
   }
   catch (err) {
     console.log("Something went wrong", err)
@@ -71,11 +73,12 @@ app.post("/api/newUser", async (req, res) => {
 
 //Look at user with all existing profiles
 
-app.get("/api/user/:userID/profiles", async (req, res) => {
+app.get("/api/user/:userAuthID/profiles", async (req, res) => {
   try {
-    const { userID } = req.params;
-    const user = await User.findOne({ "_id": userID })
-      .then(res.send(user.profiles))
+    const { userAuthID } = req.params;
+    const user = await User.findOne({ "userAuthID": userAuthID })
+    console.log(user)
+    res.send(user.profiles)
   }
   catch (err) {
     console.log("Something went wrong", err)
@@ -98,6 +101,32 @@ app.get("/api/user/:userID/profiles/:profileID", async (req, res) => {
   }
 })
 
+//Create a new Profile in your User Account
+
+app.post("/api/user/:userAuthID/profiles", async (req, res) => {
+  try {
+    const { userAuthID } = req.params
+    const { name, sex, dateOfBirth } = req.body;
+    const user = await User.findOne({ "userAuthID": userAuthID });
+    const age = getAge(dateOfBirth);
+    const newProfile = {
+      name: name,
+      sex: sex,
+      dateOfBirth: dateOfBirth,
+      age: age
+    }
+    await user.profiles.push(newProfile);
+    await user.save();
+    const userID = user._id
+    const newProfileID = newProfile._id;
+    console.log(userID, newProfileID)
+    await getCheckups(userID, newProfileID)
+  }
+  catch (err) {
+    console.log("No profile was created", err)
+    res.send({ message: "No profile was created, please try again!" })
+  }
+})
 
 // app.get('/api/newProfile', async (req, res) => {
 //   try {
