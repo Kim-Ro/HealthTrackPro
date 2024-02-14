@@ -86,7 +86,7 @@ app.get("/api/user/:userAuthID/profiles", async (req, res) => {
         profile.availableCheckups = [];
         const checkups = await CheckUp.find({ "sex": profile.sex, "age.min": { $lte: profile.age }, "age.max": { $not: { $lt: profile.age } } });
         for (const element of checkups) {
-         profile.availableCheckups.push(element._id);
+          profile.availableCheckups.push(element._id);
         }
       }
     }
@@ -119,7 +119,7 @@ app.get("/api/user/:userAuthID/profiles/:profileID", async (req, res) => {
 
 app.post("/api/user/:userAuthID/profiles", async (req, res) => {
   try {
-    const { userAuthID } = req.params
+    const { userAuthID } = req.params;
     const { name, sex, dateOfBirth } = req.body;
     const user = await User.findOne({ "userAuthID": userAuthID });
     const age = getAge(dateOfBirth);
@@ -136,7 +136,7 @@ app.post("/api/user/:userAuthID/profiles", async (req, res) => {
     }
     user.profiles.push(newProfile);
     await user.save();
-    res.send({message: "New profile created!"});
+    res.send({ message: "New profile created!" });
   }
   catch (err) {
     console.log("Something went wrong.", err)
@@ -145,9 +145,82 @@ app.post("/api/user/:userAuthID/profiles", async (req, res) => {
 })
 
 
+// update user
+app.patch("/api/user/:userAuthID", async (req, res) => {
+  try {
+    const { userAuthID } = req.params;
+    const { newUserName } = req.body;
+    const user = await User.findOne({ "userAuthID": userAuthID });
+    user.name = newUserName;
+    await user.save()
+    res.send({ message: "User updated!" })
+  }
+  catch (err) {
+    console.log("Something went wrong.", err)
+    res.send({ message: "Something went wrong." })
+  }
+})
 
-// update profile, delete
+// update profile
+app.patch("/api/user/:userAuthID/profiles/:profileID", async (req, res) => {
+  try {
+    const { userAuthID, profileID } = req.params;
+    const { newName, newSex, newDateOfBirth } = req.body;
+    const user = await User.findOne({ "userAuthID": userAuthID });
+    const profile = user.profiles.id(profileID);
+    if (profile.name !== newName) {
+      profile.name = newName
+    };
+    if (profile.sex !== newSex) {
+      profile.name = newSex
+    };
+    if (profile.dateOfBirth !== newDateOfBirth) {
+      profile.dateOfBirth = newDateOfBirth
+      const age = getAge(newDateOfBirth)
+      profile.age = age
+    };
+    profile.availableCheckups = [];
+    const checkups = await CheckUp.find({ "sex": profile.sex, "age.min": { $lte: profile.age }, "age.max": { $not: { $lt: profile.age } } });
+    for (const element of checkups) {
+      profile.availableCheckups.push(element._id);
+    }
+    await user.save()
+    res.send({ message: "Profile updated!" })
+  }
+  catch (err) {
+    console.log("Something went wrong.", err)
+    res.send({ message: "Something went wrong." })
+  }
+})
 
+//delete user
+app.delete("/api/user/:userAuthID", async (req, res) => {
+  try {
+    const { userAuthID } = req.params;
+    const user = await User.findOne({ "userAuthID": userAuthID });
+    await User.findByIdAndDelete(user._id);
+    res.send({ message: "Your User was deleted, it is no more!" })
+  }
+  catch (err) {
+    console.log("Something went wrong.", err)
+    res.send({ message: "Something went wrong!" })
+  }
+})
+
+//delete selected profile
+app.delete("/api/user/:userAuthID/profiles/:profileID", async (req, res) => {
+  try {
+    const { userAuthID, profileID } = req.params;
+    const user = await User.findOne({ "userAuthID": userAuthID });
+    await user.profiles.id(profileID).deleteOne()
+    await user.save()
+    res.send({ message: "Selected Profile was deleted" })
+  }
+  catch (err) {
+    console.log("Something went wrong.", err)
+    res.send({ message: "Something went wrong!" })
+  }
+})
 
 
 ///// workspace end //////
