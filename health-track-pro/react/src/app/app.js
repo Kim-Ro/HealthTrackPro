@@ -6,33 +6,86 @@ import MyAppBar from "../components/AppBar";
 export function App() {
 
   const [test, setTest] = useState();
+  const [authStatus, setAuthStatus] = useState('Logged out');
+  const [userProfile, setUserProfile] = useState({ isAuthenticated: false, user: null });
+
   useEffect(() => {
     console.log(2)
+
     axios
       .get("http://localhost:3333/api")
       .then(response => setTest(response.data.message))
       .catch(error => console.log(error))
+
+    axios
+      .get('http://localhost:3333/auth/status', { withCredentials: true })
+      .then(response => {
+        const status = response.data.isAuthenticated ? 'Logged in' : 'Logged out';
+        setAuthStatus(status);
+      })
+      .catch(error => console.log(error));
+
+    axios.get('http://localhost:3333/auth/profile', { withCredentials: true })
+    .then(response => {
+      if (response.data.isAuthenticated) {
+        setUserProfile({
+          isAuthenticated: response.data.isAuthenticated,
+          user: response.data.user
+        });
+        setAuthStatus('Logged in');
+      } else {
+        setAuthStatus('Logged out');
+      }
+    })
+    .catch(error => console.log(error));
+
+    axios.get('http://localhost:3333/auth/profile', { withCredentials: true })
+      .then(response => {
+        if (response.data.isAuthenticated) {
+          setUserProfile({
+            isAuthenticated: true,
+            user: response.data.user
+          });
+          setAuthStatus('Logged in');
+        } else {
+          setAuthStatus('Logged out');
+        }
+      })
+      .catch(error => console.log(error));
   }, []);
 
+  const handleLogin = () => {
+    window.location.href = 'http://localhost:3333/login'; 
+  };
+
+  const handleLogout = () => {
+    window.location.href = 'http://localhost:3333/logout'; 
+  };
 
   return (
     <div>
-      <MyAppBar />
-      <p>{test}</p>
+      <MyAppBar isAuthenticated={userProfile.isAuthenticated} onLogin={handleLogin} onLogout={handleLogout} />
       {/* START: routes */}
       {/* These routes and navigation have been generated for you */}
       {/* Feel free to move and update them to fit your needs */}
       <br />
       <hr />
       <br />
+      <p>
+        <h1>
+          {userProfile.isAuthenticated && `Hello, ${userProfile.user.nickname}`}
+        </h1>
+      </p>
       <div role="navigation">
         <ul>
-          <li>
+            <li>
             <Link to="/">Home</Link>
           </li>
           <li>
             <Link to="/page-2">Page 2</Link>
           </li>
+          <li>{test}</li>
+          <li>{authStatus}</li> {/* Display the authentication status */}
         </ul>
       </div>
       <Routes>
