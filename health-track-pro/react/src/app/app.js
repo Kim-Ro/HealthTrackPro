@@ -38,20 +38,6 @@ export function App() {
       }
     })
     .catch(error => console.log(error));
-
-    axios.get('http://localhost:3333/auth/profile', { withCredentials: true })
-      .then(response => {
-        if (response.data.isAuthenticated) {
-          setUserProfile({
-            isAuthenticated: true,
-            user: response.data.user
-          });
-          setAuthStatus('Logged in');
-        } else {
-          setAuthStatus('Logged out');
-        }
-      })
-      .catch(error => console.log(error));
   }, []);
 
   const handleLogin = () => {
