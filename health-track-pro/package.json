@@ -2,7 +2,9 @@
   "name": "@health-track-pro/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx run-many -t serve -p express-ts react"
+  },
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.14.5",

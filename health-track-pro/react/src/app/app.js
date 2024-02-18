@@ -56,17 +56,16 @@ export function App() {
 
   return (
     <div>
-      <li>{ test }</li>
-      <li>{ authStatus }</li> {/* Display the authentication status */ }
-      { userProfile.isAuthenticated && `Hello, ${userProfile.user.nickname}` }
       <MyAppBar isAuthenticated={ userProfile.isAuthenticated } onLogin={ handleLogin } onLogout={ handleLogout } />
       <Box sx={ { display: 'flex' } }>
         <NavDrawer />
         <Box component="main" sx={ { flexGrow: 1, p: 3 } }>
+          {/* <li>{ test }</li>
+          <li>{ authStatus }</li> {/* Display the authentication status */ }
           <Routes>
             <Route
               path="/"
-              element={ <ProfilesPage /> }
+              element={ <ProfilesPage userProfile={ userProfile } /> }
             />
             <Route
               path="/settings"
