@@ -1,9 +1,15 @@
-import NxWelcome from './nx-welcome';
+import axios from 'axios';
 import { useState, useEffect } from "react";
-import { Route, Routes, Link } from 'react-router-dom';
-import axios from "axios";
+import { Route, Routes } from 'react-router-dom';
 import MyAppBar from "../components/AppBar";
+import Box from '@mui/material/Box';
+import NavDrawer from "../components/NavDrawer";
+import ProfilesPage from '../pages/ProfilesPage';
+import SettingsPage from '../pages/SettingsPage';
+
+
 export function App() {
+
 
   const [test, setTest] = useState();
   const [authStatus, setAuthStatus] = useState('Logged out');
@@ -26,74 +32,49 @@ export function App() {
       .catch(error => console.log(error));
 
     axios.get('http://localhost:3333/auth/profile', { withCredentials: true })
-    .then(response => {
-      if (response.data.isAuthenticated) {
-        setUserProfile({
-          isAuthenticated: response.data.isAuthenticated,
-          user: response.data.user
-        });
-        setAuthStatus('Logged in');
-      } else {
-        setAuthStatus('Logged out');
-      }
-    })
-    .catch(error => console.log(error));
+      .then(response => {
+        if (response.data.isAuthenticated) {
+          setUserProfile({
+            isAuthenticated: response.data.isAuthenticated,
+            user: response.data.user
+          });
+          setAuthStatus('Logged in');
+        } else {
+          setAuthStatus('Logged out');
+        }
+      })
+      .catch(error => console.log(error));
   }, []);
 
   const handleLogin = () => {
-    window.location.href = 'http://localhost:3333/login'; 
+    window.location.href = 'http://localhost:3333/login';
   };
 
   const handleLogout = () => {
-    window.location.href = 'http://localhost:3333/logout'; 
+    window.location.href = 'http://localhost:3333/logout';
   };
 
   return (
     <div>
-      <MyAppBar isAuthenticated={userProfile.isAuthenticated} onLogin={handleLogin} onLogout={handleLogout} />
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <p>
-        <h1>
-          {userProfile.isAuthenticated && `Hello, ${userProfile.user.nickname}`}
-        </h1>
-      </p>
-      <div role="navigation">
-        <ul>
-            <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-          <li>{test}</li>
-          <li>{authStatus}</li> {/* Display the authentication status */}
-        </ul>
-      </div>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-        <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
-        />
-      </Routes>
-      {/* END: routes */}
+      <li>{ test }</li>
+      <li>{ authStatus }</li> {/* Display the authentication status */ }
+      { userProfile.isAuthenticated && `Hello, ${userProfile.user.nickname}` }
+      <MyAppBar isAuthenticated={ userProfile.isAuthenticated } onLogin={ handleLogin } onLogout={ handleLogout } />
+      <Box sx={ { display: 'flex' } }>
+        <NavDrawer />
+        <Box component="main" sx={ { flexGrow: 1, p: 3 } }>
+          <Routes>
+            <Route
+              path="/"
+              element={ <ProfilesPage /> }
+            />
+            <Route
+              path="/settings"
+              element={ <SettingsPage /> }
+            />
+          </Routes>
+        </Box>
+      </Box>
     </div>
   );
 }
