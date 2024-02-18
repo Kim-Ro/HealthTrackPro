@@ -33,7 +33,7 @@
 
 // CREATE NEW USER // --> this will create a user + first profile
 
-    POST (/api/newUser) 
+    POST (/api/user) 
         req.body = {
             userAuthID: 1234567     // Unique identifier from login
             name: "Max Mustermann"

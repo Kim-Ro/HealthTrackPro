@@ -4,11 +4,15 @@ import cors from 'cors';
 import CheckUp from './models/checkup-model';
 import User from "./models/user-model";
 import { auth } from "express-openid-connect";
+import userRouter from "./routes/user.routes.ts";
+import profileRouter from "./routes/user-profiles.routes.ts";
 const app = express();
 app.use(cors());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/api/user", userRouter);
+app.use("/api/user/:userID/profiles", profileRouter);
 
 const config = {
   authRequired: false,
@@ -29,6 +33,24 @@ app.use(auth(config));
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+const getUser = function (req): { nickname: string, sub: string; } {
+  if (req.oidc.isAuthenticated()) {
+    return req.oidc.user;
+  } else {
+    return undefined;
+  }
+};
+
+app.use("/api/user", (req, res, next) => {
+  const user = getUser(req);
+  if (!user) {
+    res.status(401).send("Authentification required.");
+  }
+  else {
+    next();
+  }
+});
+
 app.get('/', (req, res) => {
   res.redirect('http://localhost:4200/');
 });
@@ -47,6 +69,8 @@ app.get('/auth/profile', (req, res) => {
     res.json({ isAuthenticated: false });
   }
 });
+
+
 
 //// workspace begin //////
 
@@ -81,9 +105,11 @@ const getCheckups = async function (profile) {
 };
 
 
-// POST request to create new databankuser + first profile
-app.post("/api/newUser", async (req, res) => {
+// POST request to create new databank user + first profile
+app.post("/api/user", async (req, res) => {
   try {
+    const isAuth = getUser(req);
+    console.log(isAuth.sub);
     const { userAuthID, name, sex, dateOfBirth } = req.body;
     const age = getAge(dateOfBirth);
     const user = await createUser(userAuthID, name, sex, dateOfBirth, age);
