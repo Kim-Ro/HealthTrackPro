@@ -33,7 +33,7 @@ const getUser = function (req): { nickname: string, sub: string; } {
 router.post("/newProfile", async (req, res) => {
     try {
         const isAuth = getUser(req);
-        const userAuthID = isAuth.sub
+        const userAuthID = isAuth.sub;
         const { name, sex, dateOfBirth } = req.body;
         const user = await User.findOne({ "userAuthID": userAuthID });
         const age = getAge(dateOfBirth);
@@ -50,6 +50,7 @@ router.post("/newProfile", async (req, res) => {
         }
         user.profiles.push(newProfile);
         await user.save();
+        console.log(`PROFILE POST REQUEST: Successfully created new profile: ${newProfile}`);
         res.send({ message: "New profile created!" });
     }
     catch (err) {
@@ -62,7 +63,7 @@ router.post("/newProfile", async (req, res) => {
 router.get("/", async (req, res) => {
     try {
         const isAuth = getUser(req);
-        const userAuthID = isAuth.sub
+        const userAuthID = isAuth.sub;
         const user = await User.findOne({ "userAuthID": userAuthID });
         const profiles = user.profiles;
         for (const profile of profiles) {
@@ -77,6 +78,7 @@ router.get("/", async (req, res) => {
             }
         }
         await user.save();
+        console.log("PROFILE GET REQUEST: Successfully sent user data with all profiles.");
         res.send(user);
     }
     catch (err) {
@@ -89,11 +91,12 @@ router.get("/", async (req, res) => {
 router.get("/:profileID", async (req, res) => {
     try {
         const isAuth = getUser(req);
-        const userAuthID = isAuth.sub
+        const userAuthID = isAuth.sub;
         const { profileID } = req.params;
         const user = await User.findOne({ "userAuthID": userAuthID });
         const profile = user.profiles.id(profileID);
         await user.populate("profiles.availableCheckups");
+        console.log("PROFILE GET REQUEST: Successfully sent data for requested profile.");
         res.send(profile);
     }
     catch (err) {
@@ -106,7 +109,7 @@ router.get("/:profileID", async (req, res) => {
 router.put("/:profileID/edit", async (req, res) => {
     try {
         const isAuth = getUser(req);
-        const userAuthID = isAuth.sub
+        const userAuthID = isAuth.sub;
         const { profileID } = req.params;
         const { newName, newSex, newDateOfBirth } = req.body;
         const user = await User.findOne({ "userAuthID": userAuthID });
@@ -128,6 +131,7 @@ router.put("/:profileID/edit", async (req, res) => {
             profile.availableCheckups.push(element._id);
         }
         await user.save();
+        console.log("PROFILE PUT REQUEST: Successfully updated data: ", profile);
         res.send({ message: "Profile updated!" });
     }
     catch (err) {
@@ -140,11 +144,12 @@ router.put("/:profileID/edit", async (req, res) => {
 router.delete("/:profileID/delete", async (req, res) => {
     try {
         const isAuth = getUser(req);
-        const userAuthID = isAuth.sub
+        const userAuthID = isAuth.sub;
         const { profileID } = req.params;
         const user = await User.findOne({ "userAuthID": userAuthID });
         await user.profiles.id(profileID).deleteOne();
         await user.save();
+        console.log("PROFILE DELETE REQUEST: Successfully deleted user from databank.");
         res.send({ message: "Profile deleted." });
     }
     catch (err) {
@@ -153,4 +158,4 @@ router.delete("/:profileID/delete", async (req, res) => {
     }
 });
 
-export default router 
+export default router; 

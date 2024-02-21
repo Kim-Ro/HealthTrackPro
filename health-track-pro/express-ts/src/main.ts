@@ -34,6 +34,7 @@ const getUser = function (req): { nickname: string, sub: string; } {
   }
 };
 
+//middleware to check for authentification
 app.use("/api/user", (req, res, next) => {
   const user = getUser(req);
   if (!user) {
@@ -43,14 +44,16 @@ app.use("/api/user", (req, res, next) => {
     next();
   }
 });
+//
 
+// middleware for routing
 app.use("/api/user", userRouter);
 app.use("/api/user/profiles", profileRouter);
+//
 
 
 
-
-
+//auth
 app.get('/', (req, res) => {
   res.redirect('http://localhost:4200/');
 });
@@ -69,6 +72,8 @@ app.get('/auth/profile', (req, res) => {
     res.json({ isAuthenticated: false });
   }
 });
+
+// end auth
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {

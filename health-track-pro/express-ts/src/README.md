@@ -46,22 +46,24 @@
     GET ("/api/user/profiles")
 
 
-// GET SPECIFIC PROFILE // --> returns all data for that profile, including checkup data
-
-    GET ("/api/user/profiles/:profileID")
-        req.params = {
-            profileID: 2kfls8202054029302901}        //unique identifier for the profile in the mongo database,
-                                                    comes with each request for profile data (profile._id)
-
-
 // CREATE NEW PROFILE FOR USER //
 
     POST (/api/user/profiles/newProfile)
         req.body = {
             name: "Marie Mustermann"
             sex: "female"
-            dateOfBirth: 2005-05-06"        (If I checked correctly, then forms submit the DOB as string in format YYYY-MM-DD)
+            dateOfBirth: "2005-05-06"        (If I checked correctly, then forms submit the DOB as string in format
+                                            YYYY-MM-DD)
         }
+
+
+// GET SPECIFIC PROFILE // --> returns all data for that profile, including checkup data
+
+    GET ("/api/user/profiles/:profileID")
+        req.params = {
+            profileID: 2kfls8202054029302901}        //unique identifier for the profile in the mongo database,
+                                                    comes with each request for profile data (variable: profile._id)
+
 
 
 // UPDATE A SPECIFIC PROFILE // --> This allows to change data for a specific profile. So far there is no option to leave fields empty, sorry! - If fields don't require change, just send the old value.
@@ -71,8 +73,11 @@
             profileID: dska283782193798sdh284       // unique profile identifier from database
         }
         req.body = {
-            newName: "Maria Mustermann"
+            newName: "Mario Mustermann",
+            newSex: "male",
+            newDateOfBirth: "2005-05-06"
         }
+
 
 // DELETE A SPECIFIC PROFILE //
 

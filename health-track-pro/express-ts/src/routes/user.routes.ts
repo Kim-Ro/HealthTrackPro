@@ -6,23 +6,14 @@ const router = express.Router();
 
 
 //functions
-const getAge = function (dateOfBirth) {
-    const [year, month, day] = dateOfBirth.split('-');
-    const birth = new Date(year, month - 1, day);
-    const now = new Date();
-    const diff = new Date(now.valueOf() - birth.valueOf());
-    const age = Math.abs(diff.getFullYear() - 1970);
-    return age;
-};
-
 const createUser = async function (userAuthID, nickname) {
     const user = new User({
         userAuthID: userAuthID,
         name: nickname
     });
-    await user.save()
-    return user
-}
+    await user.save();
+    return user;
+};
 
 const getUser = function (req): { nickname: string, sub: string; } {
     if (req.oidc.isAuthenticated()) {
@@ -32,35 +23,37 @@ const getUser = function (req): { nickname: string, sub: string; } {
     }
 };
 
-// GET request to check if user already exists in databank, if not -> creates a user
+// GET request to fetch username from databank. Automatically creates a user in databank if not existing so far.
 router.get("/", async (req, res) => {
     try {
         const isAuth = getUser(req);
         const user = await User.findOne({ "userAuthID": isAuth.sub });
         if (user == undefined) {
             const user = await createUser(isAuth.sub, isAuth.nickname);
-            console.log(user)
+            console.log("USER GET REQUEST: Successfully created new user:", user);
             res.send({ message: `Hello, ${user.name}!` });
         }
         else {
-            res.send({ message: `Welcome back, ${user.name}!` })
+            console.log("USER GET REQUEST: User already exists in databank:", user);
+            res.send({ message: `Welcome back, ${user.name}!` });
         }
     }
     catch (err) {
         console.log("Something went wrong", err);
         res.send({ message: "Something went wrong." });
     }
-})
+});
 
 //PUT request to update databank user name (does NOT update user account from registration!)
 router.put("/edit", async (req, res) => {
     try {
         const isAuth = getUser(req);
-        const userAuthID = isAuth.sub
+        const userAuthID = isAuth.sub;
         const { newUserName } = req.body;
         const user = await User.findOne({ "userAuthID": userAuthID });
         user.name = newUserName;
         await user.save();
+        console.log(`USER PUT REQUEST: Username changed to "${user.name}"`);
         res.send({ message: "User updated!" });
     }
     catch (err) {
@@ -73,9 +66,10 @@ router.put("/edit", async (req, res) => {
 router.delete("/delete", async (req, res) => {
     try {
         const isAuth = getUser(req);
-        const userAuthID = isAuth.sub
+        const userAuthID = isAuth.sub;
         const user = await User.findOne({ "userAuthID": userAuthID });
         await User.findByIdAndDelete(user._id);
+        console.log("USER DELETE REQUEST: User was deleted successfully.");
         res.send({ message: "User deleted, it is no more!" });
     }
     catch (err) {
@@ -84,7 +78,7 @@ router.delete("/delete", async (req, res) => {
     }
 });
 
-export default router
+export default router;
 
 
 
