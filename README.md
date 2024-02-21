@@ -5,7 +5,9 @@ Install nx:
 npm install nx -g
 
 Go into the health-track-pro folder and run following command:
-nx run-many -t serve -p express-ts react
+npm start
+
+(alternatively: nx run-many -t serve -p express-ts react)
 
 common naming convention for branches
 

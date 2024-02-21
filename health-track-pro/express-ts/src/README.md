@@ -28,76 +28,65 @@
 
 // ROUTES //
 
--> Routing all yet in one file, will be updated/improved.
+
+// GET USER // --> this will fetch the user nickname saved in the database and greet the user. If no user exists, will automatically create one with the nickname provided by the authentification. Suitable as front page.
+
+    GET ("/api/user") 
 
 
-// CREATE NEW USER // --> this will create a user + first profile
+// UPDATE USERNAME // --> This updates the user name.
 
-    POST (/api/newUser) 
-        req.body = {
-            userAuthID: 1234567     // Unique identifier from login
-            name: "Max Mustermann"
-            sex: "male"
-            dateOfBirth: "1985-10-05"    // preferrable as string (for age calculation)
-        }
+    PUT ("/api/user/edit")
+        req.body = {newUserName: "Moritz Mustermann"}
+
 
 
 // GET USER OVERVIEW WITH ALL PROFILES // --> automatically calculates age anew for each profile and updates checkups if age has changed. Returns entire user data + all existing profiles for user, but not all the checkup data.
 
-    GET (/api/user/:userAuthID/profiles)
-        req.params = {
-            userAuthID: 1234567
+    GET ("/api/user/profiles")
+
+
+// CREATE NEW PROFILE FOR USER //
+
+    POST (/api/user/profiles/newProfile)
+        req.body = {
+            name: "Marie Mustermann"
+            sex: "female"
+            dateOfBirth: "2005-05-06"        (If I checked correctly, then forms submit the DOB as string in format
+                                            YYYY-MM-DD)
         }
 
 
 // GET SPECIFIC PROFILE // --> returns all data for that profile, including checkup data
 
-    GET (/api/user/userAuthID/profiles/:profileID)
+    GET ("/api/user/profiles/:profileID")
         req.params = {
-            userAuthID: 1234567,
             profileID: 2kfls8202054029302901}        //unique identifier for the profile in the mongo database,
-                                                    comes with each request for profile data (profile._id)
+                                                    comes with each request for profile data (variable: profile._id)
 
-
-// CREATE NEW PROFILE FOR USER //
-
-    POST (/api/user/:userAuthID/profiles)
-        req.params = {userAuthID: 1234567}
-        req.body = {
-            name: "Marie Mustermann"
-            sex: "female"
-            dateOfBirth: 2005-05-06"
-        }
-
-
-// UPDATE USER // --> This does only change the name for the overall user, not the profiles
-
-    PUT (/api/user/:userAuthID)
-        req.params = {userauthID: 1234567}
-        req.body = {newUserName: "Moritz Mustermann"}
 
 
 // UPDATE A SPECIFIC PROFILE // --> This allows to change data for a specific profile. So far there is no option to leave fields empty, sorry! - If fields don't require change, just send the old value.
 
-    PUT (/api/user/userAuthID/profiles/:profileID)
+    PUT (/api/user/profiles/:profileID/edit)
         req.params = {
-            userAuthID: 1234567
             profileID: dska283782193798sdh284       // unique profile identifier from database
         }
         req.body = {
-            newName: "Maria Mustermann"
+            newName: "Mario Mustermann",
+            newSex: "male",
+            newDateOfBirth: "2005-05-06"
         }
+
 
 // DELETE A SPECIFIC PROFILE //
 
-    DELETE (/api/user/:userAuthID/profiles/:profileID)
-        req.params = {
-            userAuthID: 123456, 
+    DELETE (/api/user/profiles/:profileID/delete)
+        req.params = { 
             profileID: sjd2736128ddsk282338
             }
 
 
 // DELETE USER (IN DATABASE, NOT LOGIN) // --> deletes user with ALL existing profiles
 
-    DELETE (/api/user/:userAuthID)
-        req.params = {userAuthID: 1234567}
+    DELETE (/api/user/delete)
