@@ -1,17 +1,17 @@
 import useProfilesContext from "../hooks/useProfilesContext";
 import ProfileCard from "./ProfileCard";
-
+import Grid from '@mui/material/Grid';
 
 function ProfileList() {
     const { profiles } = useProfilesContext();
 
     const renderedProfiles = profiles.map((profile) => {
-        return <ProfileCard key={profile._id} profile={profile} />
+        return <ProfileCard item xs="auto" key={profile._id} profile={profile} />
     });
 
-    return <div>
+    return <Grid container>
         {renderedProfiles}
-    </div>;
+    </Grid>;
 }
 
 export default ProfileList;
