@@ -4,25 +4,16 @@ import { Route, Routes } from 'react-router-dom';
 import MyAppBar from "../components/AppBar";
 import Box from '@mui/material/Box';
 import NavDrawer from "../components/NavDrawer";
-import ProfilesPage from '../pages/ProfilesPage';
+import ProfilesOverviewPage from '../pages/ProfilesOverviewPage';
 import SettingsPage from '../pages/SettingsPage';
 
 
 export function App() {
 
-
-  const [test, setTest] = useState();
   const [authStatus, setAuthStatus] = useState('Logged out');
   const [userProfile, setUserProfile] = useState({ isAuthenticated: false, user: null });
 
   useEffect(() => {
-    console.log(2)
-
-    axios
-      .get("http://localhost:3333/api")
-      .then(response => setTest(response.data.message))
-      .catch(error => console.log(error))
-
     axios
       .get('http://localhost:3333/auth/status', { withCredentials: true })
       .then(response => {
@@ -56,20 +47,18 @@ export function App() {
 
   return (
     <div>
-      <MyAppBar isAuthenticated={ userProfile.isAuthenticated } onLogin={ handleLogin } onLogout={ handleLogout } />
-      <Box sx={ { display: 'flex' } }>
+      <MyAppBar isAuthenticated={userProfile.isAuthenticated} onLogin={handleLogin} onLogout={handleLogout} />
+      <Box sx={{ display: 'flex' }}>
         <NavDrawer />
-        <Box component="main" sx={ { flexGrow: 1, p: 3 } }>
-          {/* <li>{ test }</li>
-          <li>{ authStatus }</li> {/* Display the authentication status */ }
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Routes>
             <Route
               path="/"
-              element={ <ProfilesPage userProfile={ userProfile } /> }
+              element={<ProfilesOverviewPage userProfile={userProfile} />}
             />
             <Route
               path="/settings"
-              element={ <SettingsPage /> }
+              element={<SettingsPage />}
             />
           </Routes>
         </Box>
