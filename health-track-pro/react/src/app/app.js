@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import MyAppBar from "../components/AppBar";
 import Box from '@mui/material/Box';
 import NavDrawer from "../components/NavDrawer";
-import ProfilesPage from '../pages/ProfilesPage';
+import ProfilesOverviewPage from '../pages/ProfilesOverviewPage';
 import SettingsPage from '../pages/SettingsPage';
 
 
@@ -54,7 +54,7 @@ export function App() {
           <Routes>
             <Route
               path="/"
-              element={<ProfilesPage userProfile={userProfile} />}
+              element={<ProfilesOverviewPage userProfile={userProfile} />}
             />
             <Route
               path="/settings"
