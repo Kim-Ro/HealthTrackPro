@@ -3,7 +3,7 @@ import ProfilesContext from "../context/profiles";
 import ProfileList from "../components/ProfileList";
 import { Button } from "@mui/material";
 
-function ProfilesPage() {
+function ProfilesOverviewPage() {
 
     const { stableFetchProfiles } = useContext(ProfilesContext);
 
@@ -17,4 +17,4 @@ function ProfilesPage() {
     </div>
 }
 
-export default ProfilesPage;
+export default ProfilesOverviewPage;

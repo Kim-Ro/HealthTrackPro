@@ -6,7 +6,8 @@ import Box from '@mui/material/Box';
 import NavDrawer from "../components/NavDrawer";
 import ProfilesOverviewPage from '../pages/ProfilesOverviewPage';
 import SettingsPage from '../pages/SettingsPage';
-
+import useProfilesContext from "../hooks/useProfilesContext";
+import ProfilePage from '../pages/ProfilePage';
 
 export function App() {
 
@@ -45,6 +46,10 @@ export function App() {
     window.location.href = 'http://localhost:3333/logout';
   };
 
+  // hint for dynamic URLs
+  // https://stackoverflow.com/questions/60295654/react-router-dynamically-url-id
+  // https://reactrouter.com/en/main/route/route
+
   return (
     <div>
       <MyAppBar isAuthenticated={userProfile.isAuthenticated} onLogin={handleLogin} onLogout={handleLogout} />
@@ -54,7 +59,11 @@ export function App() {
           <Routes>
             <Route
               path="/"
-              element={<ProfilesOverviewPage userProfile={userProfile} />}
+              element={<ProfilesOverviewPage />}
+            />
+            <Route
+              path="/profile/:profileId"
+              element={<ProfilePage />}
             />
             <Route
               path="/settings"
