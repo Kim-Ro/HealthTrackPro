@@ -8,17 +8,10 @@ function Provider({ children }) {
 
     const fetchProfiles = useCallback(async () => {
         const response = await axios
-            .get("http://localhost:3333/api/user/profiles", {
-                headers: {
-                    Authorization: "What goes here pls?"
-                }
-            })
+            .get("http://localhost:3333/api/user/profiles")
             .then(response => { setProfiles(response.data); console.log(response.data) })
             .catch(error => console.log(error));
     }, []);
-
-    // const stableFetchProfiles = useCallback(fetchProfiles, []);
-    // code from books example from the course, but it's never used, need to investigate
 
     const createProfile = async (name, sex, dateOfBirth) => {
         const response = await axios.post("http://localhost:3333/api/user/profiles/newProfile", {
