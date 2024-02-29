@@ -1,19 +1,19 @@
 import { useEffect, useContext } from "react";
 import ProfilesContext from "../context/profiles";
 import ProfileList from "../components/ProfileList";
+import { Button } from "@mui/material";
 
-function ProfilesPage({ userProfile }) {
+function ProfilesPage() {
 
-    const { fetchProfiles } = useContext(ProfilesContext);
+    const { stableFetchProfiles } = useContext(ProfilesContext);
 
     useEffect(() => {
-        fetchProfiles();
+        stableFetchProfiles();
     }, []);
 
     return <div>
-        <p>This is the profile page.</p>
-        {userProfile.isAuthenticated && `Hello, ${userProfile.user.nickname}`}
         <ProfileList />
+        <Button variant="contained">Add Profile</Button>
     </div>
 }
 

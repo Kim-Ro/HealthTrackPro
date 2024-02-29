@@ -8,15 +8,17 @@ function Provider({ children }) {
 
     const fetchProfiles = useCallback(async () => {
         const response = await axios
-            .get("http://localhost:3333/api/user/profiles")
-            .then(response => { setProfiles(response.data); console.log(response.data) })
+            .get("http://localhost:3333/api/user/profiles", { withCredentials: true })
+            .then(response => { setProfiles(response.data.profiles) })
             .catch(error => console.log(error));
     }, []);
+
+    const stableFetchProfiles = useCallback(fetchProfiles, []);
 
     const createProfile = async (name, sex, dateOfBirth) => {
         const response = await axios.post("http://localhost:3333/api/user/profiles/newProfile", {
             name, sex, dateOfBirth,
-        });
+        }, { withCredentials: true });
 
         const updatedProfiles = [
             ...profiles, response.data];
@@ -28,7 +30,7 @@ function Provider({ children }) {
             newName: newName,
             newSex: newSex,
             newDateOfBirth: newDateOfBirth
-        });
+        }, { withCredentials: true });
 
         const updatedProfiles = profiles.map((profile) => {
             if (profile.id === id) {
@@ -40,7 +42,7 @@ function Provider({ children }) {
     };
 
     const deleteProfileById = async (id) => {
-        axios.delete("http://localhost:3333/api/user/profiles/" + id + "/delete")
+        axios.delete("http://localhost:3333/api/user/profiles/" + id + "/delete", { withCredentials: true })
 
         const updatedProfiles = profiles.filter((profile) => {
             return profile.id !== id;
@@ -51,7 +53,7 @@ function Provider({ children }) {
 
     const valueToShare = {
         profiles,
-        fetchProfiles,
+        stableFetchProfiles,
         createProfile,
         updateProfileById,
         deleteProfileById
