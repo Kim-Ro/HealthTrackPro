@@ -6,9 +6,13 @@ import Box from '@mui/material/Box';
 import NavDrawer from "../components/NavDrawer";
 import ProfilesOverviewPage from '../pages/ProfilesOverviewPage';
 import SettingsPage from '../pages/SettingsPage';
-
+import ProfilePage from '../pages/ProfilePage';
+import useProfilesContext from '../hooks/useProfilesContext';
 
 export function App() {
+
+  //Authentication
+  //TODO: refactor that and put it in a Provider to keep this file clean
 
   const [authStatus, setAuthStatus] = useState('Logged out');
   const [userProfile, setUserProfile] = useState({ isAuthenticated: false, user: null });
@@ -45,6 +49,15 @@ export function App() {
     window.location.href = 'http://localhost:3333/logout';
   };
 
+  // Profiles
+
+  const { stableFetchProfiles } = useProfilesContext();
+
+  useEffect(() => {
+    stableFetchProfiles();
+  }, []);
+
+  //Rendered components
   return (
     <div>
       <MyAppBar isAuthenticated={userProfile.isAuthenticated} onLogin={handleLogin} onLogout={handleLogout} />
@@ -54,7 +67,11 @@ export function App() {
           <Routes>
             <Route
               path="/"
-              element={<ProfilesOverviewPage userProfile={userProfile} />}
+              element={<ProfilesOverviewPage />}
+            />
+            <Route
+              path="/profile/:profileId"
+              element={<ProfilePage />}
             />
             <Route
               path="/settings"

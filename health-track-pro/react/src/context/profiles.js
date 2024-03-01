@@ -13,6 +13,7 @@ function Provider({ children }) {
             .catch(error => console.log(error));
     }, []);
 
+    // stable references, returns the exact same function at rerenders
     const stableFetchProfiles = useCallback(fetchProfiles, []);
 
     const createProfile = async (name, sex, dateOfBirth) => {
@@ -53,6 +54,7 @@ function Provider({ children }) {
 
     const valueToShare = {
         profiles,
+        fetchProfiles,
         stableFetchProfiles,
         createProfile,
         updateProfileById,

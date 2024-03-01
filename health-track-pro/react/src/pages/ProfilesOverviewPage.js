@@ -1,15 +1,7 @@
-import { useEffect, useContext } from "react";
-import ProfilesContext from "../context/profiles";
 import ProfileList from "../components/ProfileList";
 import { Button } from "@mui/material";
 
-function ProfilesPage() {
-
-    const { stableFetchProfiles } = useContext(ProfilesContext);
-
-    useEffect(() => {
-        stableFetchProfiles();
-    }, []);
+function ProfilesOverviewPage() {
 
     return <div>
         <ProfileList />
@@ -17,4 +9,4 @@ function ProfilesPage() {
     </div>
 }
 
-export default ProfilesPage;
+export default ProfilesOverviewPage;
