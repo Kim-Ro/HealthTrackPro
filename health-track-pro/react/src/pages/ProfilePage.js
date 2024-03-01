@@ -7,8 +7,6 @@ export default function ProfilePage() {
     const { profileId } = useParams();
     const { profiles } = useProfilesContext();
 
-    console.log(profiles);
-
     const currentProfile = profiles.find((profile) => profile._id == profileId);
     console.log(currentProfile);
 
