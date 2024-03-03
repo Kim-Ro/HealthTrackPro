@@ -1,11 +1,12 @@
 import ProfileList from "../components/ProfileList";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 function ProfilesOverviewPage() {
 
     return <div>
+        <Typography variant="h4" component="h1" mb={2}>Profiles</Typography>
         <ProfileList />
-        <Button variant="contained">Add Profile</Button>
+        <Button variant="contained" sx={{ mt: 2 }}>Add Profile</Button>
     </div>
 }
 
