@@ -1,18 +1,32 @@
 import { useParams } from "react-router-dom";
-import useProfilesContext from "../hooks/useProfilesContext";
+import { Typography } from "@mui/material";
+import ProfileCard from "../components/ProfileCard";
+import CheckupList from "../components/CheckupList";
+import { useCallback, useState, useEffect } from "react";
+import axios from "axios";
 
 export default function ProfilePage() {
 
     const { profileId } = useParams();
-    const { profiles } = useProfilesContext();
-    console.log(profiles);
+    const [profile, setProfile] = useState(null);
 
-    const currentProfile = profiles.find((profile) => profile._id == profileId);
-    console.log(currentProfile);
+    const fetchProfile = useCallback(async () => {
+        const response = await axios
+            .get("http://localhost:3333/api/user/profiles/" + profileId, { withCredentials: true })
+            .then(response => { setProfile(response.data); })
+            .catch(error => console.log(error));
+    }, []);
 
-    return <div>
-        <p>{profileId}</p>
-        <p>{currentProfile?.name}</p>
-        <p>{currentProfile?._id}</p>
-    </div>
+    const stableFetchProfile = useCallback(fetchProfile, []);
+    useEffect(() => {
+        stableFetchProfile();
+    }, []);
+
+    if (profile != null) {
+        return <div>
+            <Typography variant="h4" component="h1" mb={2}>{profile.name}</Typography>
+            <ProfileCard profile={profile}></ProfileCard>
+            <CheckupList checkups={profile.availableCheckups}></CheckupList>
+        </div >
+    }
 };

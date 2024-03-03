@@ -26,10 +26,11 @@ export default function NavDrawer() {
     ]
 
 
-    const renderedProfileItems = profileItems.map((item) => {
+    const renderedProfileItems = profileItems.map((item, index) => {
+        const key = "p" + index;
         return <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-                <ListItem key={item.label} disablePadding>
+                <ListItem key={key} disablePadding>
                     <ListItemButton
                         component={Link} to={item.path}
                         selected={location == item.path}
@@ -45,9 +46,9 @@ export default function NavDrawer() {
     })
 
 
-    const renderedNavItems = navItems.map((item) => {
+    const renderedNavItems = navItems.map((item, index) => {
         if (!item.hasChildren) {
-            return <ListItem key={item.label} disablePadding>
+            return <ListItem key={index} disablePadding>
                 <ListItemButton
                     component={Link} to={item.path}
                     selected={location == item.path}>
@@ -58,7 +59,7 @@ export default function NavDrawer() {
                 </ListItemButton>
             </ListItem>
         } else {
-            return <div><ListItem key={item.label} disablePadding>
+            return <div><ListItem key={index} disablePadding>
                 <ListItemButton
                     component={Link} to={item.path}
                     selected={location == item.path}>
