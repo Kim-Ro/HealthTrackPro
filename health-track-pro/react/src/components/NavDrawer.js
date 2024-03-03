@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Box, Drawer, Toolbar, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material';
 import { People, Person, Settings, ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import useProfilesContext from '../hooks/useProfilesContext';
@@ -7,18 +7,7 @@ import useProfilesContext from '../hooks/useProfilesContext';
 const drawerWidth = 240;
 
 export default function NavDrawer() {
-
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const [selectedChildIndex, setSelectedChildIndex] = React.useState(-1);
-    const handleListItemClick = (event, isChild, index) => {
-        if (isChild) {
-            setSelectedIndex(-1);
-            setSelectedChildIndex(index);
-        } else {
-            setSelectedIndex(index);
-            setSelectedChildIndex(-1);
-        }
-    };
+    const location = useLocation().pathname;
 
     const [open, setOpen] = React.useState(true);
     const handleChevronClick = () => {
@@ -37,31 +26,32 @@ export default function NavDrawer() {
     ]
 
 
-    const renderedProfileItems = profileItems.map((item) => {
+    const renderedProfileItems = profileItems.map((item, index) => {
+        const key = "p" + index;
         return <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-                <ListItemButton
-                    component={Link} to={item.path}
-                    selected={selectedChildIndex === profileItems.indexOf(item)}
-                    onClick={(event) => handleListItemClick(event, true, profileItems.indexOf(item))}
-                    sx={{ pl: 3 }}>
-                    <ListItemIcon>
-                        <Person />
-                    </ListItemIcon>
-                    <ListItemText primary={item.label} />
-                </ListItemButton>
+                <ListItem key={key} disablePadding>
+                    <ListItemButton
+                        component={Link} to={item.path}
+                        selected={location == item.path}
+                        sx={{ pl: 3 }}>
+                        <ListItemIcon>
+                            <Person />
+                        </ListItemIcon>
+                        <ListItemText primary={item.label} />
+                    </ListItemButton>
+                </ListItem>
             </List>
         </Collapse>
     })
 
 
-    const renderedNavItems = navItems.map((item) => {
+    const renderedNavItems = navItems.map((item, index) => {
         if (!item.hasChildren) {
-            return <ListItem key={item.label} disablePadding>
+            return <ListItem key={index} disablePadding>
                 <ListItemButton
                     component={Link} to={item.path}
-                    selected={selectedIndex === navItems.indexOf(item)}
-                    onClick={(event) => handleListItemClick(event, false, navItems.indexOf(item))}>
+                    selected={location == item.path}>
                     <ListItemIcon>
                         {item.icon}
                     </ListItemIcon>
@@ -69,11 +59,10 @@ export default function NavDrawer() {
                 </ListItemButton>
             </ListItem>
         } else {
-            return <div><ListItem key={item.label} disablePadding>
+            return <div><ListItem key={index} disablePadding>
                 <ListItemButton
                     component={Link} to={item.path}
-                    selected={selectedIndex === navItems.indexOf(item)}
-                    onClick={(event) => handleListItemClick(event, false, navItems.indexOf(item))}>
+                    selected={location == item.path}>
                     <ListItemIcon>
                         {item.icon}
                     </ListItemIcon>
