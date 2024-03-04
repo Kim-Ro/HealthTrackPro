@@ -4,12 +4,15 @@ import avatarFemale from "../images/avatar_female.png";
 import useProfilesContext from '../hooks/useProfilesContext';
 import ProfileEdit from "./ProfileEdit";
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 export default function ProfilesCard({ profile }) {
 
-    const path = "profile/" + profile._id;
+    const location = useLocation().pathname;
+    let path = null;
+    if (location == "/") {
+        path = "profile/" + profile._id;
+    }
 
     const [showEdit, setShowEdit] = useState(false);
     // console.log("showEdit is: " + showEdit);
@@ -38,6 +41,7 @@ export default function ProfilesCard({ profile }) {
     }
 
     //rendering
+    //TODO: only add CardActionArea on OverviewPage OR display profile data differently on ProfilePage
     let content = <div>
         <CardActionArea component={RouterLink} to={path} sx={{ textDecoration: "none" }}>
             <CardMedia
