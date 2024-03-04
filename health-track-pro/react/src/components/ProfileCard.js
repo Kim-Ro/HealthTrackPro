@@ -15,7 +15,6 @@ export default function ProfilesCard({ profile }) {
     }
 
     const [showEdit, setShowEdit] = useState(false);
-    // console.log("showEdit is: " + showEdit);
 
     // mock placeholder images
     let imagePlaceholder = avatarMale;
@@ -57,7 +56,7 @@ export default function ProfilesCard({ profile }) {
         </CardActionArea>
         <CardActions>
             <Button size="small" variant="outlined" onClick={handleEditClick}>Edit</Button>
-            <Button size="small" variant="outlined" color="error" onClick={handleDeleteClick}>Delete</Button>
+            <Button size="small" variant="outlined" color="error" onClick={handleDeleteClick} component={RouterLink} to="/">Delete</Button>
         </CardActions></div>;
 
     if (showEdit) {
