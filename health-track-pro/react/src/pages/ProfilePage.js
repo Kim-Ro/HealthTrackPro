@@ -22,11 +22,15 @@ export default function ProfilePage() {
         stableFetchProfile();
     }, []);
 
-    if (profile != null) {
+    console.log(profile);
+
+    if (profile != null && profile != undefined) {
         return <div>
             <Typography variant="h4" component="h1" mb={2}>{profile.name}</Typography>
             <ProfileCard profile={profile}></ProfileCard>
             <CheckupList checkups={profile.availableCheckups}></CheckupList>
         </div >
+    } else {
+        return <Typography variant="h4" component="h1" mb={2}>Profile not found.</Typography>
     }
 };

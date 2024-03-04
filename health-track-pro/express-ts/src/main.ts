@@ -5,7 +5,7 @@ import { auth } from "express-openid-connect";
 import userRouter from "./routes/user.routes";
 import profileRouter from "./routes/user-profiles.routes";
 const app = express();
-app.use(cors());
+// app.use(cors());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -13,6 +13,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(cors({
   origin: 'http://localhost:4200',
   credentials: true,
+  methods: ['GET', 'PUT', 'UPDATE', 'DELETE']
 }));
 
 const config = {

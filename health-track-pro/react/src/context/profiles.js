@@ -14,7 +14,7 @@ function Provider({ children }) {
     }, []);
 
     // stable references, returns the exact same function at rerenders
-    const stableFetchProfiles = useCallback(fetchProfiles, []);
+    const stableFetchProfiles = useCallback(fetchProfiles, [profiles]);
 
     const createProfile = async (name, sex, dateOfBirth) => {
         const response = await axios.post("http://localhost:3333/api/user/profiles/newProfile", {
