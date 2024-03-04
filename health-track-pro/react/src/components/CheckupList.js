@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography } from "@mui/material";
 export default function CheckupList({ checkups }) {
 
-    if (checkups != null && checkups != checkups) {
+    if (checkups != null && checkups != undefined) {
 
         const renderedCheckups = checkups.map((checkup) => {
             return (
