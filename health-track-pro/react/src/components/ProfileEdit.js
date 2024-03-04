@@ -29,7 +29,6 @@ export default function ProfileEdit({ profile, onSubmit }) {
         updateProfileById(newProfile._id, newProfile.name, newProfile.sex, newProfile.dateOfBirth);
     };
 
-    // for some reason the active toggle button styling doesn't update when you click it (although the value is correct)
     return <Box component="form" onSubmit={handleSubmit}
         display="flex" flexDirection="column" gap={3} p={0}>
         <FormControl>

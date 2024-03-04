@@ -1,11 +1,15 @@
-import { Card, CardContent, CardMedia, CardActions, Typography, Button } from "@mui/material";
+import { Card, CardContent, CardActionArea, CardMedia, CardActions, Typography, Button } from "@mui/material";
 import avatarMale from "../images/avatar_male.png";
 import avatarFemale from "../images/avatar_female.png";
 import useProfilesContext from '../hooks/useProfilesContext';
 import ProfileEdit from "./ProfileEdit";
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 export default function ProfilesCard({ profile }) {
+
+    const path = "profile/" + profile._id;
 
     const [showEdit, setShowEdit] = useState(false);
     // console.log("showEdit is: " + showEdit);
@@ -20,7 +24,6 @@ export default function ProfilesCard({ profile }) {
     const { deleteProfileById } = useProfilesContext();
 
     const handleDeleteClick = () => {
-        // disabled bc frontend not updated correctly
         deleteProfileById(profile._id);
     }
 
@@ -30,21 +33,24 @@ export default function ProfilesCard({ profile }) {
         setShowEdit(!showEdit);
     }
 
-    const handleSubmit = () => { //still needs to be passed down so that it knows when to hide BookEdit
+    const handleSubmit = () => {
         setShowEdit(false);
-        // console.log("ProfileEdit form submitted in Profile Card")
     }
 
-    let content = <div><CardMedia
-        component="img"
-        alt="profile image"
-        height="240"
-        src={imagePlaceholder} />
-        <CardContent>
-            <Typography gutterBottom variant="h5" component="div" >{profile.name}</Typography>
-            <Typography gutterBottom variant="body2" component="div">{profile.sex}</Typography>
-            <Typography gutterBottom variant="body2" component="div">{profile.dateOfBirth}</Typography>
-        </CardContent>
+    //rendering
+    let content = <div>
+        <CardActionArea component={RouterLink} to={path} sx={{ textDecoration: "none" }}>
+            <CardMedia
+                component="img"
+                alt="profile image"
+                height="240"
+                src={imagePlaceholder} />
+            <CardContent >
+                <Typography gutterBottom variant="h5" component="div" >{profile.name}</Typography>
+                <Typography gutterBottom variant="body2" component="div">{profile.sex}</Typography>
+                <Typography gutterBottom variant="body2" component="div">{profile.dateOfBirth}</Typography>
+            </CardContent>
+        </CardActionArea>
         <CardActions>
             <Button size="small" variant="outlined" onClick={handleEditClick}>Edit</Button>
             <Button size="small" variant="outlined" color="error" onClick={handleDeleteClick}>Delete</Button>
