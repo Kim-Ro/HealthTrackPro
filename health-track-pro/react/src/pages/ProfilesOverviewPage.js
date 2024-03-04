@@ -4,11 +4,9 @@ import { Button, Typography } from "@mui/material";
 
 function ProfilesOverviewPage() {
 
-    const { createProfile, stableFetchProfiles } = useProfilesContext();
-
+    const { createProfile } = useProfilesContext();
 
     const handleClick = () => {
-        // fix: when creating, Profile list is not updated with data
         createProfile("Micky Mouse", "male", "1970-01-01") //dummy profile for testing
     }
 

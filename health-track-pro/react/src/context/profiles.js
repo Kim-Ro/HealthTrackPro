@@ -43,11 +43,13 @@ function Provider({ children }) {
     };
 
     const deleteProfileById = async (id) => {
-        axios.delete("http://localhost:3333/api/user/profiles/" + id + "/delete", { withCredentials: true })
+        await axios.delete("http://localhost:3333/api/user/profiles/" + id + "/delete", { withCredentials: true });
 
         const updatedProfiles = profiles.filter((profile) => {
-            return profile.id !== id;
+            return profile._id !== id;
         });
+        console.log("updated profiles:");
+        console.log(updatedProfiles);
         setProfiles(updatedProfiles);
     };
 

@@ -20,7 +20,7 @@ export default function ProfilePage() {
     const stableFetchProfile = useCallback(fetchProfile, []);
     useEffect(() => {
         stableFetchProfile();
-    }, [profile]);
+    }, []);
 
     console.log(profile);
 

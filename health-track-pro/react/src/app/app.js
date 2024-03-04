@@ -52,10 +52,11 @@ export function App() {
   // Profiles
 
   const { profiles, stableFetchProfiles } = useProfilesContext();
+  const counter = profiles.length;
 
   useEffect(() => {
     stableFetchProfiles();
-  }, [profiles]);
+  }, [counter]);
 
   //Rendered components
   return (
