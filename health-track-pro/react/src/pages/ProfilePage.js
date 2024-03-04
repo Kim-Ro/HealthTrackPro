@@ -22,8 +22,6 @@ export default function ProfilePage() {
         stableFetchProfile();
     }, []);
 
-    console.log(profile);
-
     if (profile != null && profile != undefined) {
         return <div>
             <Typography variant="h4" component="h1" mb={2}>{profile.name}</Typography>

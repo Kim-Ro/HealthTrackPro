@@ -5,6 +5,7 @@ import { Box, FormControl, InputLabel, OutlinedInput, ToggleButtonGroup, ToggleB
 export default function ProfileEdit({ profile, onSubmit }) {
     const [newProfile, setNewProfile] = useState(profile);
     const { updateProfileById } = useProfilesContext();
+    const [sex, setSex] = useState(profile.sex);
 
     const handleNameChange = (event) => {
         let changedProfile = newProfile;
@@ -12,10 +13,10 @@ export default function ProfileEdit({ profile, onSubmit }) {
         setNewProfile(changedProfile);
     };
     const handleSexChange = (event) => {
+        setSex(event.target.value);
         let changedProfile = newProfile;
         changedProfile.sex = event.target.value;
         setNewProfile(changedProfile);
-
     };
     const handleDateChange = (event) => {
         let changedProfile = newProfile;
@@ -37,7 +38,7 @@ export default function ProfileEdit({ profile, onSubmit }) {
         </FormControl>
         <ToggleButtonGroup
             color="primary"
-            value={newProfile.sex}
+            value={sex}
             exclusive
             onChange={handleSexChange}
             id="sexInput"
