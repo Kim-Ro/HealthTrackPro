@@ -1,20 +1,24 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography, List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider } from "@mui/material";
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+
 export default function CheckupList({ checkups }) {
 
     if (checkups != null && checkups != undefined) {
 
         const renderedCheckups = checkups.map((checkup) => {
             return (
-                <Card sx={{ maxWidth: 320 }}>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div" >{checkup.name}</Typography>
-                        <Typography gutterBottom variant="body1" component="div">{checkup.description}</Typography>
-                        <Typography gutterBottom variant="body1" component="div">Available every {checkup.repetitionInYears} year(s)</Typography>
-                    </CardContent>
-                </Card>
+                <div key={checkup._id}><ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                        <Avatar>
+                            <MonitorHeartIcon />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={checkup.name} secondary={checkup.description} />
+                </ListItem>
+                    <Divider /></div>
             );
         });
 
-        return <div>{renderedCheckups}</div>;
+        return <List>{renderedCheckups}</List>
     }
 }
