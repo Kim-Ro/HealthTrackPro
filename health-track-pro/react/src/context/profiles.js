@@ -27,19 +27,21 @@ function Provider({ children }) {
     };
 
     const updateProfileById = async (id, newName, newSex, newDateOfBirth) => {
+        const updatedProfiles = profiles.map((profile) => {
+
+            if (profile._id == id) {
+                return { _id: id, name: newName, sex: newSex, dateOfBirth: newDateOfBirth }
+            }
+            return profile;
+        });
+
+        setProfiles(updatedProfiles);
+
         const response = await axios.put("http://localhost:3333/api/user/profiles/" + id + "/edit", {
             newName: newName,
             newSex: newSex,
             newDateOfBirth: newDateOfBirth
         }, { withCredentials: true });
-
-        const updatedProfiles = profiles.map((profile) => {
-            if (profile.id === id) {
-                return { ...profile, ...response.data };
-            }
-            return profile;
-        });
-        setProfiles(updatedProfiles);
     };
 
     const deleteProfileById = async (id) => {

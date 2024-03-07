@@ -30,8 +30,6 @@ export default function ProfilesCard({ profile }) {
     }
 
     const handleEditClick = (event) => {
-        console.log("edit was pressed");
-        console.log(event);
         setShowEdit(!showEdit);
     }
 
