@@ -1,20 +1,35 @@
 import useProfilesContext from "../hooks/useProfilesContext";
 import ProfileList from "../components/ProfileList";
+import ProfileCard from "../components/ProfileCard";
 import { Button, Typography } from "@mui/material";
+import { useState } from 'react';
 
-function ProfilesOverviewPage() {
 
-    const { createProfile } = useProfilesContext();
+export default function ProfilesOverviewPage() {
 
-    const handleClick = () => {
-        createProfile("Micky Mouse", "male", "1970-01-01") //dummy profile for testing
+    const [showAdd, setShowAdd] = useState(false);
+
+    const emptyProfile = { _id: 0, name: "", sex: "male", dateOfBirth: "1970-01-01" }
+
+    const handleAddClick = () => {
+        setShowAdd(!showAdd);
     }
 
-    return <div>
-        <Typography variant="h4" component="h1" mb={2}>Profiles</Typography>
-        <ProfileList />
-        <Button variant="contained" sx={{ mt: 2 }} onClick={handleClick}>Add Profile</Button>
-    </div>
-}
+    const onAdd = () => {
+        setShowAdd(false);
+    }
 
-export default ProfilesOverviewPage;
+    if (showAdd) {
+        return <div>
+            <Typography variant="h4" component="h1" mb={2}>Profiles</Typography>
+            <ProfileList />
+            <ProfileCard item xs="auto" key="emptyProfile" profile={emptyProfile} isAdd={true} onAdd={onAdd} underline="none" />
+        </div>
+    } else {
+        return <div>
+            <Typography variant="h4" component="h1" mb={2}>Profiles</Typography>
+            <ProfileList />
+            <Button variant="contained" sx={{ mt: 2 }} onClick={handleAddClick}>Add Profile</Button>
+        </div>
+    }
+}

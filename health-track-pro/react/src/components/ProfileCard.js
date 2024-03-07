@@ -6,7 +6,7 @@ import ProfileEdit from "./ProfileEdit";
 import { useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
-export default function ProfilesCard({ profile }) {
+export default function ProfilesCard({ profile, isAdd, onAdd }) {
 
     const location = useLocation().pathname;
     let path = null;
@@ -14,7 +14,7 @@ export default function ProfilesCard({ profile }) {
         path = "profile/" + profile._id;
     }
 
-    const [showEdit, setShowEdit] = useState(false);
+    const [showEdit, setShowEdit] = useState(isAdd);
 
     // mock placeholder images
     let imagePlaceholder = avatarMale;
@@ -35,6 +35,7 @@ export default function ProfilesCard({ profile }) {
 
     const handleSubmit = () => {
         setShowEdit(false);
+        if (isAdd) { onAdd() };
     }
 
     //rendering
@@ -65,11 +66,14 @@ export default function ProfilesCard({ profile }) {
                 height="240"
                 src={imagePlaceholder} />
             <CardContent>
-                <ProfileEdit profile={profile} onSubmit={handleSubmit} />
+                <ProfileEdit profile={profile} onSubmit={handleSubmit} isAdd={isAdd} />
             </CardContent>
+            <CardActions><Button variant="text" onClick={handleSubmit}>Cancel</Button></CardActions>
         </div>
     }
-    return <Card sx={{ maxWidth: 320 }}>
+
+    let mt = isAdd ? 4 : 0;
+    return <Card sx={{ maxWidth: 320, mt: mt }}>
         {content}
     </Card >
 }

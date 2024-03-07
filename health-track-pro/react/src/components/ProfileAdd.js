@@ -2,10 +2,10 @@ import { useState } from "react";
 import useProfilesContext from '../hooks/useProfilesContext';
 import { Box, FormControl, InputLabel, OutlinedInput, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
 
-export default function ProfileEdit({ profile, onSubmit, isAdd }) {
-    const [newProfile, setNewProfile] = useState(profile);
-    const { updateProfileById, createProfile } = useProfilesContext();
-    const [sex, setSex] = useState(profile.sex);
+export default function ProfileAdd({ onSubmit }) {
+    const [newProfile, setNewProfile] = useState(null);
+    const { createProfile } = useProfilesContext();
+    const [sex, setSex] = useState("male");
 
     const handleNameChange = (event) => {
         let changedProfile = newProfile;
@@ -27,11 +27,7 @@ export default function ProfileEdit({ profile, onSubmit, isAdd }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         onSubmit();
-        if (isAdd) {
-            createProfile(newProfile.name, newProfile.sex, newProfile.dateOfBirth);
-        } else {
-            updateProfileById(newProfile._id, newProfile.name, newProfile.sex, newProfile.dateOfBirth);
-        }
+        createProfile(newProfile.name, newProfile.sex, newProfile.dateOfBirth);
     };
 
     return <Box component="form" onSubmit={handleSubmit}

@@ -7,7 +7,7 @@ function ProfileList() {
     const { profiles } = useProfilesContext();
 
     const renderedProfiles = profiles.map((profile, index) => {
-        return <Grid><ProfileCard item xs="auto" key={index} profile={profile} underline="none" /></Grid>
+        return <Grid><ProfileCard item xs="auto" key={index} profile={profile} isAdd={false} underline="none" /></Grid>
     });
 
     return <Grid container spacing={4}>
