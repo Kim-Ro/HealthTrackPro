@@ -14,7 +14,7 @@ function Provider({ children }) {
     }, []);
 
     // stable references, returns the exact same function at rerenders
-    const stableFetchProfiles = useCallback(fetchProfiles, []);
+    const stableFetchProfiles = useCallback(fetchProfiles, [profiles]);
 
     const createProfile = async (name, sex, dateOfBirth) => {
         const response = await axios.post("http://localhost:3333/api/user/profiles/newProfile", {
@@ -27,27 +27,31 @@ function Provider({ children }) {
     };
 
     const updateProfileById = async (id, newName, newSex, newDateOfBirth) => {
+        const updatedProfiles = profiles.map((profile) => {
+
+            if (profile._id == id) {
+                return { _id: id, name: newName, sex: newSex, dateOfBirth: newDateOfBirth }
+            }
+            return profile;
+        });
+
+        setProfiles(updatedProfiles);
+
         const response = await axios.put("http://localhost:3333/api/user/profiles/" + id + "/edit", {
             newName: newName,
             newSex: newSex,
             newDateOfBirth: newDateOfBirth
         }, { withCredentials: true });
-
-        const updatedProfiles = profiles.map((profile) => {
-            if (profile.id === id) {
-                return { ...profile, ...response.data };
-            }
-            return profile;
-        });
-        setProfiles(updatedProfiles);
     };
 
     const deleteProfileById = async (id) => {
-        axios.delete("http://localhost:3333/api/user/profiles/" + id + "/delete", { withCredentials: true })
+        await axios.delete("http://localhost:3333/api/user/profiles/" + id + "/delete", { withCredentials: true });
 
         const updatedProfiles = profiles.filter((profile) => {
-            return profile.id !== id;
+            return profile._id !== id;
         });
+        console.log("updated profiles:");
+        console.log(updatedProfiles);
         setProfiles(updatedProfiles);
     };
 

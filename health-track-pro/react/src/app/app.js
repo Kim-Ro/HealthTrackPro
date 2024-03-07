@@ -51,11 +51,12 @@ export function App() {
 
   // Profiles
 
-  const { stableFetchProfiles } = useProfilesContext();
+  const { profiles, stableFetchProfiles } = useProfilesContext();
+  const counter = profiles.length;
 
   useEffect(() => {
     stableFetchProfiles();
-  }, []);
+  }, [counter]);
 
   //Rendered components
   return (
