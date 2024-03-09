@@ -4,7 +4,7 @@ import { Box, Drawer, Toolbar, List, ListItem, ListItemButton, ListItemIcon, Lis
 import { People, Person, Settings, ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import useProfilesContext from '../hooks/useProfilesContext';
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 export default function NavDrawer() {
     const location = useLocation().pathname;
@@ -28,9 +28,9 @@ export default function NavDrawer() {
 
     const renderedProfileItems = profileItems.map((item, index) => {
         const key = "p" + index;
-        return <Collapse in={open} timeout="auto" unmountOnExit>
+        return <Collapse key={key} in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-                <ListItem key={key} disablePadding>
+                <ListItem disablePadding>
                     <ListItemButton
                         component={Link} to={item.path}
                         selected={location == item.path}
@@ -59,7 +59,7 @@ export default function NavDrawer() {
                 </ListItemButton>
             </ListItem>
         } else {
-            return <div><ListItem key={index} disablePadding>
+            return <div key={index}><ListItem disablePadding>
                 <ListItemButton
                     component={Link} to={item.path}
                     selected={location == item.path}>
